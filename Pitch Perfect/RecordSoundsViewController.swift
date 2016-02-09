@@ -15,21 +15,25 @@ class RecordSoundsViewController: UIViewController {
     // MARK: - Properties
     @IBOutlet weak var recordLabel: UILabel!
     @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var stopButton: UIButton!
     
     var audioRecord: AVAudioRecorder!
     var recordedAudio: RecordedAudio!
+    var buttonFlashing = false
     
- 
+    
+    
     //MARK: - ViewController Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        recordAudio()
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
         self.recordButton.enabled = true
-        self.recordLabel.hidden = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -41,10 +45,6 @@ class RecordSoundsViewController: UIViewController {
     
     func recordAudio() {
         let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        //        let currentDateTime = NSDate()
-        //        let formatter = NSDateFormatter()
-        //        formatter.dateFormat = "ddMMyyy-HHmmss"
-        //        let recordingName = formatter.stringFromDate(currentDateTime)+".wav"
         let recordingName = "my_audio.wav"
         let pathArray = [path, recordingName]
         let filePath = NSURL.fileURLWithPathComponents(pathArray)
@@ -56,26 +56,60 @@ class RecordSoundsViewController: UIViewController {
         do {
             try audioRecord = AVAudioRecorder(URL: filePath!, settings: [:])
             audioRecord.delegate = self
-            
         } catch {
             print("error")
         }
-        
         audioRecord.meteringEnabled = true
         audioRecord.prepareToRecord()
-        audioRecord.record()
     }
-
+    
+    func buttonStartFlashing() {
+        buttonFlashing = true
+        recordButton.alpha = 1
+        UIView.animateWithDuration(0.5, delay: 0.0, options:
+            [
+                UIViewAnimationOptions.CurveEaseInOut,
+                UIViewAnimationOptions.Repeat,
+                UIViewAnimationOptions.Autoreverse,
+                UIViewAnimationOptions.AllowUserInteraction],
+            animations: { () -> Void in
+                self.recordButton.alpha = 0.1
+            }) { Bool in
+        }
+    }
+    
+    func buttonStopFlashing() {
+        buttonFlashing = false
+        UIView.animateWithDuration(0.1, delay: 0.0, options: [
+            UIViewAnimationOptions.CurveEaseInOut,
+            UIViewAnimationOptions.BeginFromCurrentState],
+            animations: {
+                self.recordButton.alpha = 1
+            }, completion: {Bool in
+        })
+    }
+    
     // MARK: - Action
     
     @IBAction func recordButtonTapped(sender: UIButton) {
-        self.recordLabel.hidden = false
-        self.recordButton.enabled = false
-        self.recordAudio()
+        
+        stopButton.hidden = false
+        if (!audioRecord.recording) {
+            let audioSession  = AVAudioSession.sharedInstance()
+            try! audioSession.setActive(true)
+            recordLabel.text = "Recording in process..."
+            audioRecord.record()
+            buttonStartFlashing()
+        } else {
+            audioRecord.pause()
+            recordLabel.text = "Paused"
+            buttonStopFlashing()
+        }
     }
     @IBAction func stopButtonTapped(sender: UIButton) {
-        self.recordLabel.hidden = true
+        self.recordLabel.text = "Tap to record"
         audioRecord.stop()
+        stopButton.hidden = true
         let audioSession  = AVAudioSession.sharedInstance()
         try! audioSession.setActive(false)
     }
@@ -96,14 +130,16 @@ class RecordSoundsViewController: UIViewController {
 extension RecordSoundsViewController: AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
-            self.recordedAudio = RecordedAudio()
-            
-            recordedAudio.filePathUrl = recorder.url
-            recordedAudio.title = recorder.url.lastPathComponent
+            recordedAudio = RecordedAudio(title: recorder.url.lastPathComponent!, filePathUrl: recorder.url)
             self.performSegueWithIdentifier("stopRecording", sender: recordedAudio)
         } else {
             print("error")
             recordButton.enabled = true
+            
+            // Let user know there is some error
+            let alert = UIAlertController(title: "Audio cannot be recorded", message: "Please try again", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
 }

@@ -22,15 +22,10 @@ class PlaySoundsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        if let paths = NSBundle.mainBundle().pathForResource("movieQuote", ofType: "mp3") {
-        //            print(paths)
-        //            let audioURL = NSURL(fileURLWithPath: paths)
-        //        } else {
-        //            print("no audio")
-        //        }
     }
     
     override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
         do {
             if let recordedAudio = self.recordedAudio {
                 try audioPlayer = AVAudioPlayer(contentsOfURL: recordedAudio.filePathUrl)
@@ -46,7 +41,7 @@ class PlaySoundsViewController: UIViewController {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        audioPlayer.stop()
+       resetAudio()
     }
     
     override func didReceiveMemoryWarning() {
@@ -57,28 +52,34 @@ class PlaySoundsViewController: UIViewController {
     // MARK: - Functions
     
     func playAudio(rate: Float) {
-        
+        resetAudio()
         audioPlayer.play()
         audioPlayer.currentTime = 0.0
         audioPlayer.rate = rate
     }
     
-    func playAudioWithVariablePitch(pitch: Float) {
-        // reset the audio
-        audioPlayer.stop()
+    func resetAudio() {
         audioEngine.stop()
+        audioPlayer.stop()
         audioEngine.reset()
+    }
+    
+    func playAudioWithVariablePitch(pitch: Float) {
+        //reset the audio
+        resetAudio()
         
         let audioPlayerNode = AVAudioPlayerNode()
         let timePitch = AVAudioUnitTimePitch()
-
+        
+        
         audioEngine.attachNode(audioPlayerNode)
         timePitch.pitch = pitch
         audioEngine.attachNode(timePitch)
         audioEngine.connect(audioPlayerNode, to: timePitch, format: nil)
         audioEngine.connect(timePitch, to: audioEngine.outputNode, format: nil)
         audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
-        try! self.audioEngine.start()
+        try! audioEngine.start()
+        audioPlayerNode.play()
     }
     
     // MARK: - Action
@@ -92,11 +93,11 @@ class PlaySoundsViewController: UIViewController {
     }
     
     @IBAction func chipmunkButtonTapped(sender: UIButton) {
-       self.playAudioWithVariablePitch(1000)
+        self.playAudioWithVariablePitch(1000)
     }
     
     @IBAction func stopButtonTapped(sender: UIButton) {
-        audioPlayer.stop()
+        resetAudio()
         audioPlayer.currentTime = 0
     }
     
