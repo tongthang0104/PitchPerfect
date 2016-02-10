@@ -34,6 +34,7 @@ class RecordSoundsViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         self.recordButton.enabled = true
+        recordButton.alpha = 1
     }
     
     override func didReceiveMemoryWarning() {
@@ -62,6 +63,8 @@ class RecordSoundsViewController: UIViewController {
         audioRecord.meteringEnabled = true
         audioRecord.prepareToRecord()
     }
+    
+    // Thanks to http://stackoverflow.com/questions/31288914/issue-with-flash-animation-with-record-button-swift
     
     func buttonStartFlashing() {
         buttonFlashing = true
@@ -142,5 +145,10 @@ extension RecordSoundsViewController: AVAudioRecorderDelegate {
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
+    
+    func audioRecorderBeginInterruption(recorder: AVAudioRecorder) {
+        audioRecord.stop()
+    }
+    
 }
 

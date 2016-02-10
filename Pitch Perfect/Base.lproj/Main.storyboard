@@ -84,13 +84,6 @@
                                     <action selector="slowButtonTapped:" destination="U7e-m6-9Nv" eventType="touchUpInside" id="gq6-Dn-a5i"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Yr-aQ-hNZ">
-                                <rect key="frame" x="275" y="378" width="50" height="50"/>
-                                <state key="normal" image="stop@2x-iphone"/>
-                                <connections>
-                                    <action selector="stopButtonTapped:" destination="U7e-m6-9Nv" eventType="touchUpInside" id="cBx-ds-LPe"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Clf-D3-duD">
                                 <rect key="frame" x="450" y="114" width="100" height="100"/>
                                 <state key="normal" image="fast@2x-iphone"/>
@@ -112,18 +105,35 @@
                                     <action selector="darthvaderButtonTapped:" destination="U7e-m6-9Nv" eventType="touchUpInside" id="JdG-Wv-roB"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yh1-l7-OoL">
+                                <rect key="frame" x="249.5" y="362" width="101" height="100"/>
+                                <state key="normal" image="echo"/>
+                                <connections>
+                                    <action selector="playEchoButtonTapped:" destination="U7e-m6-9Nv" eventType="touchUpInside" id="LNx-GN-cDq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Yr-aQ-hNZ">
+                                <rect key="frame" x="275" y="492" width="50" height="50"/>
+                                <state key="normal" image="stop@2x-iphone"/>
+                                <connections>
+                                    <action selector="stopButtonTapped:" destination="U7e-m6-9Nv" eventType="touchUpInside" id="cBx-ds-LPe"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.91368652809999995" blue="0.59775990609999996" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="KaC-ue-293" firstAttribute="top" secondItem="Clf-D3-duD" secondAttribute="bottom" constant="36" id="3Rs-sk-HDw"/>
+                            <constraint firstItem="yh1-l7-OoL" firstAttribute="top" secondItem="Tt5-iF-Mt1" secondAttribute="bottom" constant="298" id="78e-m3-yyB"/>
                             <constraint firstItem="ZZ2-Ys-z3A" firstAttribute="top" secondItem="Tt5-iF-Mt1" secondAttribute="bottom" constant="50" id="8js-pj-aLa"/>
                             <constraint firstItem="Clf-D3-duD" firstAttribute="top" secondItem="Tt5-iF-Mt1" secondAttribute="bottom" constant="50" id="MjD-7T-bwl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Clf-D3-duD" secondAttribute="trailing" constant="30" id="OQa-Rc-LJN"/>
                             <constraint firstItem="1Yr-aQ-hNZ" firstAttribute="centerX" secondItem="nGs-TA-J0G" secondAttribute="centerX" id="Pjs-c8-sKJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="KaC-ue-293" secondAttribute="trailing" constant="30" id="S9R-gA-ZS0"/>
-                            <constraint firstItem="1Yr-aQ-hNZ" firstAttribute="top" secondItem="Tt5-iF-Mt1" secondAttribute="bottom" constant="314" id="jeU-K8-fP3"/>
+                            <constraint firstItem="1Yr-aQ-hNZ" firstAttribute="top" secondItem="Tt5-iF-Mt1" secondAttribute="bottom" constant="428" id="jeU-K8-fP3"/>
                             <constraint firstItem="ZZ2-Ys-z3A" firstAttribute="leading" secondItem="nGs-TA-J0G" secondAttribute="leadingMargin" constant="30" id="lZn-iK-pBF"/>
                             <constraint firstItem="aJE-Ia-WJX" firstAttribute="leading" secondItem="nGs-TA-J0G" secondAttribute="leadingMargin" constant="30" id="nn9-jy-v6W"/>
+                            <constraint firstItem="yh1-l7-OoL" firstAttribute="centerX" secondItem="nGs-TA-J0G" secondAttribute="centerX" id="toB-sh-CrK"/>
+                            <constraint firstItem="1Yr-aQ-hNZ" firstAttribute="top" secondItem="yh1-l7-OoL" secondAttribute="bottom" constant="30" id="uSW-ey-hCd"/>
                             <constraint firstItem="aJE-Ia-WJX" firstAttribute="top" secondItem="ZZ2-Ys-z3A" secondAttribute="bottom" constant="36" id="vzp-7s-8cz"/>
                         </constraints>
                     </view>
@@ -154,6 +164,7 @@
     <resources>
         <image name="chipmunk@2x-iphone" width="100" height="100"/>
         <image name="darthvader@2x-iphone" width="100" height="100"/>
+        <image name="echo" width="101" height="102"/>
         <image name="fast@2x-iphone" width="100" height="100"/>
         <image name="microphone@2x-iphone" width="100" height="100"/>
         <image name="slow@2x-iphone" width="100" height="100"/>
